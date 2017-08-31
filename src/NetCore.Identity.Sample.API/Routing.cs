@@ -7,7 +7,7 @@ namespace NetCore.Identity.Sample.API
     {
         public static IRouteBuilder ConfigureRoutes(IRouteBuilder routeBuilder)
         {
-            AddDefaultRoute(routeBuilder, defaultController: "Home", defaultAction: "Index");
+            AddDefaultRoute(routeBuilder, defaultController: "Data", defaultAction: "ConfidentialData");
             return routeBuilder;
         }
 
@@ -15,7 +15,7 @@ namespace NetCore.Identity.Sample.API
         {
             routeBuilder.MapRoute(
                 name: "default",
-                template: "{controller}/{action}/{id?}",
+                template: "api/{controller}/{action}/{id?}",
                 defaults: new { controller = defaultController, action = defaultAction });
         }
     }
