@@ -45,7 +45,7 @@ namespace NetCore.Identity.Sample.API.Controllers
             {
                 id = guid,
                 expires_in = TimeSpan.FromMinutes(10).TotalSeconds,
-                auth_token = _jwtFactory.GenerateToken(user.Id.ToString(), user.UserName, roles: new[] { "seclev1" }, tokenDuration: TimeSpan.FromMinutes(10))
+                auth_token = _jwtFactory.GenerateToken(user.Id.ToString(), user.UserName, roles: new[] { "LowSec" }, tokenDuration: TimeSpan.FromMinutes(10))
             };
 
             return Ok(JsonConvert.SerializeObject(response, Formatting.None));
@@ -75,7 +75,7 @@ namespace NetCore.Identity.Sample.API.Controllers
                 {
                     id = guid,
                     expires_in = TimeSpan.FromMinutes(10).TotalSeconds,
-                    auth_token = _jwtFactory.GenerateToken(user.Id.ToString(), user.UserName, roles: new[] { "seclev1" }, tokenDuration: TimeSpan.FromMinutes(10))
+                    auth_token = _jwtFactory.GenerateToken(user.Id.ToString(), user.UserName, roles: new[] { "HighSec", "Other" }, tokenDuration: TimeSpan.FromMinutes(10))
                 };
 
                 return Ok(JsonConvert.SerializeObject(response, Formatting.None));

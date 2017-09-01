@@ -52,12 +52,6 @@ namespace NetCore.Identity.Sample.API
                 })
                 .AddJwtBearer(opt => opt.TokenValidationParameters = tokenValidation);
 
-            // Set up Authorization
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("SecurityLevel1", policy => policy.RequireClaim("rol", "seclev1"));
-            });
-
             // Add Mvc with default configuration
             services.AddMvc();
         }

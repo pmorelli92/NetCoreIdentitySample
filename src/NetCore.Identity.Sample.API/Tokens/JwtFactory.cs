@@ -33,10 +33,8 @@ namespace NetCore.Identity.Sample.API.Tokens
                 new Claim(JwtRegisteredClaimNames.Sub, userName),
                 new Claim(JwtRegisteredClaimNames.Jti,  Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
-                new Claim("id", userId),
-                new Claim("rol", roles.First())
-                //new Claim("roles", $"[{string.Join(", ", roles)}]")
-             };
+                new Claim("uid", userId)
+             }.Concat(roles.Select(e => new Claim("roles", e)));
 
             var jwtToken =
                 new JwtSecurityToken(
