@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using NetCore.Identity.Sample.API.JWT;
+using NetCore.Identity.Sample.API.Tokens;
 using System;
 using System.IO.Compression;
 using System.Text;
@@ -41,49 +41,22 @@ namespace NetCore.Identity.Sample.API
             ConfigureDatabase(services);
             ConfigureGzipCompression(services);
 
-            services.AddSingleton<IJwtFactory, JwtFactory>();
-            services.AddSingleton<JwtIssuerOptions, JwtIssuerOptions>();
+            var tokenValidation = ConfigureJWTToken(services);
 
-            // Set up JWT
-            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
-
-            services.Configure<JwtIssuerOptions>(options =>
-            {
-                options.Issuer = GetIssuer(jwtAppSettingOptions);
-                options.Audience = GetAudience(jwtAppSettingOptions);
-
-                options.SigningCredentials =
-                    new SigningCredentials(
-                        algorithm: SecurityAlgorithms.HmacSha256,
-                        key: GetSignInKey(jwtAppSettingOptions));
-            });
-
-            // Set up Authorization
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("ApiUser", policy => policy.RequireClaim("rol", "api_access"));
-            });
-
+            // Enable Authenticaton
             services
                 .AddAuthentication(opt =>
                 {
                     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(opt =>
-                {
-                    opt.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = GetSignInKey(jwtAppSettingOptions),
-                        ValidateIssuer = true,
-                        ValidIssuer = GetIssuer(jwtAppSettingOptions),
-                        ValidateAudience = true,
-                        ValidAudience = GetAudience(jwtAppSettingOptions),
-                        ValidateLifetime = true,
-                        ClockSkew = TimeSpan.Zero,
-                    };
-                });
+                .AddJwtBearer(opt => opt.TokenValidationParameters = tokenValidation);
+
+            // Set up Authorization
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("SecurityLevel1", policy => policy.RequireClaim("rol", "seclev1"));
+            });
 
             // Add Mvc with default configuration
             services.AddMvc();
@@ -148,14 +121,35 @@ namespace NetCore.Identity.Sample.API
             .AddDefaultTokenProviders();
         }
 
-        private SymmetricSecurityKey GetSignInKey(IConfigurationSection configurationSection)
-            => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configurationSection["SecretKey"]));
+        private TokenValidationParameters ConfigureJWTToken(IServiceCollection services)
+        {
+            // Set up JWT
+            var issuer = Configuration.GetValue<string>("Jwt:Issuer");
+            var audience = Configuration.GetValue<string>("Jwt:Audience");
+            var secretKey = Configuration.GetValue<string>("Jwt:SecretKey");
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
 
-        private string GetAudience(IConfigurationSection configurationSection)
-            => configurationSection["Audience"];
+            // This line can be replaced with Autofac or other DI container
+            services.AddSingleton(e =>
+                new JwtFactory(
+                    issuer,
+                    audience,
+                    new SigningCredentials(
+                        key: signingKey,
+                        algorithm: SecurityAlgorithms.HmacSha256)));
 
-        private string GetIssuer(IConfigurationSection configurationSection)
-            => configurationSection["Issuer"];
+            return new TokenValidationParameters
+            {
+                ValidIssuer = issuer,
+                ValidAudience = audience,
+                IssuerSigningKey = signingKey,
+                ClockSkew = TimeSpan.Zero,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                ValidateLifetime = true,
+            };
+        }
 
         #endregion Private Methods
     }

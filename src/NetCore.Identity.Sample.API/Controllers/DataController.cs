@@ -1,19 +1,21 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace NetCore.Identity.Sample.API.Controllers
 {
     public class DataController : Controller
     {
         [HttpGet]
-        [Authorize(Policy = "ApiUser")]
+        [Authorize(Policy = "SecurityLevel1")]
         public IActionResult ConfidentialData()
         {
-            var asd = User.Claims;
+            return Json("Secure date accessed");
+        }
 
-
-            return Json("ConfidentialData");
+        [HttpGet]
+        public IActionResult Claims()
+        {
+            return Json(User.Claims);
         }
     }
 }
