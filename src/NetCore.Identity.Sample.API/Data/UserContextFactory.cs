@@ -7,15 +7,17 @@ namespace NetCore.Identity.Sample.API.Data
 {
     public class UserContextFactory : IDesignTimeDbContextFactory<UserContext>
     {
+        private readonly IConfiguration _configuration;
+
+        public UserContextFactory(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public UserContext CreateDbContext(params string[] args)
         {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-
             var builder = new DbContextOptionsBuilder<UserContext>();
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
             builder.UseSqlServer(connectionString);
 
             return new UserContext(builder.Options);

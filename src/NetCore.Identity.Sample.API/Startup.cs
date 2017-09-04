@@ -42,7 +42,7 @@ namespace NetCore.Identity.Sample.API
             ConfigureGzipCompression(services);
 
             var tokenValidation = ConfigureJWTToken(services);
-
+            
             // Enable Authenticaton
             services
                 .AddAuthentication(opt =>
@@ -83,7 +83,7 @@ namespace NetCore.Identity.Sample.API
         {
             // We do not use services.AddDbContext since our config is in the factory
             // This line can be replaced with Autofac or other DI container
-            services.AddScoped(e => new Data.UserContextFactory().CreateDbContext());
+            services.AddScoped(e => new Data.UserContextFactory(Configuration).CreateDbContext());
         }
 
         private void ConfigureHTTPS(IServiceCollection services)
