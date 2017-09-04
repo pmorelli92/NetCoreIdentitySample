@@ -1,0 +1,93 @@
+{
+	"variables": [],
+	"info": {
+		"name": "NetCore.identity.Sample.API",
+		"_postman_id": "62e624ba-523a-c6b2-bc47-a51a33abdddc",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RegisterAnonymous",
+			"request": {
+				"url": "https://localhost:44328/api/auth/RegisterAnonymous",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RegisterUser",
+			"request": {
+				"url": "https://localhost:44328/api/auth/RegisterUser",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"juanch30\",\n\t\"password\": \"tagorda\",\n\t\"email\": \"fake123\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "LowSecurityLevel",
+			"request": {
+				"url": "https://localhost:44328/api/data/LowSecurityLevel",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuY2gzMCIsImp0aSI6IjU3ODUxMGI5LWNmMDQtNGQwMy1hN2VhLTUwOGRkMTY3YWZhYyIsImlhdCI6MTUwNDUzODkxMiwidWlkIjoiMjU3Y2I1OTUtOTZhMC00M2EwLWI5N2UtNzdiNzU3NjdhYTMxIiwicm9sZXMiOlsiSGlnaFNlYyIsIk90aGVyIl0sIm5iZiI6MTUwNDUzODkxMiwiZXhwIjoxNTA0NTM5NTEyLCJpc3MiOiJOZXRDb3JlSWRlbnRpdHlTYW1wbGVBUEkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0NDMyOC8ifQ.IcdNGWYxgiKBcNWU7gFnvC2Y6VNBMLeIdGYASVNbxs4",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "HighSecurityLevel",
+			"request": {
+				"url": "https://localhost:44328/api/data/HighSecurityLevel",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuY2gzMCIsImp0aSI6IjU3ODUxMGI5LWNmMDQtNGQwMy1hN2VhLTUwOGRkMTY3YWZhYyIsImlhdCI6MTUwNDUzODkxMiwidWlkIjoiMjU3Y2I1OTUtOTZhMC00M2EwLWI5N2UtNzdiNzU3NjdhYTMxIiwicm9sZXMiOlsiSGlnaFNlYyIsIk90aGVyIl0sIm5iZiI6MTUwNDUzODkxMiwiZXhwIjoxNTA0NTM5NTEyLCJpc3MiOiJOZXRDb3JlSWRlbnRpdHlTYW1wbGVBUEkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0NDMyOC8ifQ.IcdNGWYxgiKBcNWU7gFnvC2Y6VNBMLeIdGYASVNbxs4",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Claims",
+			"request": {
+				"url": "https://localhost:44328/api/data/Claims",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlNzA5M2U2YS1mYTQ5LTQzYWItOTU3YS04YjA5OGQ3ZWQ0ZGQiLCJqdGkiOiJiODk0NTAwNy1jYTI4LTQzNmUtODQ4ZS1hOGYxOWVhM2RjMDUiLCJpYXQiOjE1MDQ1Mzg4MjQsInVpZCI6ImU3MDkzZTZhLWZhNDktNDNhYi05NTdhLThiMDk4ZDdlZDRkZCIsInJvbGVzIjoiTG93U2VjIiwibmJmIjoxNTA0NTM4ODI0LCJleHAiOjE1MDQ1Mzk0MjQsImlzcyI6Ik5ldENvcmVJZGVudGl0eVNhbXBsZUFQSSIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0MzI4LyJ9.k_PA_ipldkb3YK1Zv_NGPd0-mglRmLe5jDv6dJFHOA8",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
